@@ -35,7 +35,8 @@ const App: React.FC = () => {
     // Actually, on desktop we show it always. On mobile it's a drawer.
 
     try {
-      const { reply, insight } = await sendMessageToGemini(text);
+      // Pass existing messages (history) + the new text to the service
+      const { reply, insight } = await sendMessageToGemini(messages, text);
 
       const botMessage: ChatMessageType = {
         id: (Date.now() + 1).toString(),

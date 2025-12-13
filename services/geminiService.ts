@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { CulturalInsight } from "../types";
+import { CulturalInsight, ChatMessage } from "../types";
 
 const apiKey = process.env.API_KEY || '';
 
@@ -42,15 +42,28 @@ const insightSchema = {
   required: ["reply", "detectedLanguage", "englishTranslation", "culturalNote", "sentiment", "suggestedResponses"],
 };
 
-export const sendMessageToGemini = async (message: string): Promise<{ reply: string, insight: CulturalInsight }> => {
+export const sendMessageToGemini = async (history: ChatMessage[], message: string): Promise<{ reply: string, insight: CulturalInsight }> => {
   if (!apiKey) {
     throw new Error("API Key is missing. Please check your configuration.");
   }
 
   try {
+    // Format history for Gemini
+    // We map the existing ChatMessage array to the Content format { role, parts: [{ text }] }
+    const contents = history.map((msg) => ({
+      role: msg.role,
+      parts: [{ text: msg.text }],
+    }));
+
+    // Add the current new message to the conversation
+    contents.push({
+      role: 'user',
+      parts: [{ text: message }],
+    });
+
     const response = await ai.models.generateContent({
       model: MODEL_NAME,
-      contents: message,
+      contents: contents,
       config: {
         systemInstruction: "You are Salom AI, a polite, knowledgeable, and multilingual cultural assistant. Your goal is to facilitate connection through language. When a user speaks to you, identify their language, translate it, provide a relevant cultural tidbit, and respond warmly. If the input is 'salomsalom', recognize it as a playful or emphatic Uzbek/Tajik greeting.",
         responseMimeType: "application/json",
