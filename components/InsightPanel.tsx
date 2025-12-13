@@ -1,6 +1,6 @@
 import React from 'react';
 import { CulturalInsight } from '../types';
-import { Globe, Languages, Quote, Info } from 'lucide-react';
+import { Globe, Languages, Quote, Lightbulb } from 'lucide-react';
 
 interface InsightPanelProps {
   insight: CulturalInsight | null;
@@ -24,9 +24,9 @@ const InsightPanel: React.FC<InsightPanelProps> = ({ insight, isLoading }) => {
         <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mb-6">
           <Globe size={40} className="text-indigo-400" />
         </div>
-        <h3 className="text-lg font-semibold text-slate-800 mb-2">Ready to Explore</h3>
+        <h3 className="text-lg font-semibold text-slate-800 mb-2">Ready to Assist</h3>
         <p className="text-sm leading-relaxed max-w-xs mx-auto">
-          Start a conversation in any language. I'll detect it, translate it, and share interesting cultural facts!
+          Ask me anything! I can help with coding, writing, analysis, or just have a friendly chat in any language.
         </p>
       </div>
     );
@@ -41,26 +41,26 @@ const InsightPanel: React.FC<InsightPanelProps> = ({ insight, isLoading }) => {
         </div>
         <div>
           <h2 className="text-lg font-bold text-slate-900 leading-tight">{insight.detectedLanguage}</h2>
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">Detected Language</p>
+          <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">Language</p>
         </div>
       </div>
 
-      {/* Translation Card */}
+      {/* Translation / Summary Card */}
       <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm relative overflow-hidden group">
          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-50 to-transparent rounded-bl-full opacity-50 -mr-8 -mt-8"></div>
          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center">
-            <Quote size={12} className="mr-1.5" /> Translation
+            <Quote size={12} className="mr-1.5" /> Key Topic / Translation
          </h3>
          <p className="text-xl text-slate-800 font-serif italic">"{insight.englishTranslation}"</p>
       </div>
 
-      {/* Cultural Fact Card */}
+      {/* Insight Card (formerly Cultural Fact) */}
       <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-5 shadow-lg text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10">
-            <Globe size={64} />
+            <Lightbulb size={64} />
         </div>
         <h3 className="text-xs font-bold text-indigo-300 uppercase tracking-wider mb-3 flex items-center">
-          <Info size={12} className="mr-1.5" /> Cultural Insight
+          <Lightbulb size={12} className="mr-1.5" /> Smart Insight & Context
         </h3>
         <p className="text-sm leading-relaxed text-slate-200 font-light">
           {insight.culturalNote}

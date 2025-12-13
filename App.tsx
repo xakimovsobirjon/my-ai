@@ -31,8 +31,6 @@ const App: React.FC = () => {
 
     setMessages((prev) => [...prev, newMessage]);
     setIsLoading(true);
-    // On mobile, keep sidebar closed until result comes back, then maybe show a hint?
-    // Actually, on desktop we show it always. On mobile it's a drawer.
 
     try {
       // Pass existing messages (history) + the new text to the service
@@ -48,15 +46,12 @@ const App: React.FC = () => {
       setMessages((prev) => [...prev, botMessage]);
       setLatestInsight(insight);
       
-      // If on mobile, maybe auto-open sidebar briefly or show a notification? 
-      // For now, let's just update the state. User can open sidebar to see info.
-      
     } catch (error) {
       console.error(error);
       const errorMessage: ChatMessageType = {
          id: Date.now().toString(),
          role: 'model',
-         text: "I'm having trouble connecting to my linguistic database right now. Please try again.",
+         text: "I'm having trouble connecting to the network right now. Please try again.",
          timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -108,22 +103,22 @@ const App: React.FC = () => {
         <div className="flex-1 overflow-y-auto p-4 lg:p-8 space-y-2 scroll-smooth">
             {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center px-4 animate-fade-in">
-                    <h2 className="text-3xl font-bold text-slate-800 mb-4">Salom! Hello! Bonjour!</h2>
+                    <h2 className="text-3xl font-bold text-slate-800 mb-4">Salom! How can I help?</h2>
                     <p className="text-slate-500 max-w-md text-lg leading-relaxed mb-8">
-                        I am your cultural companion. Speak to me in any language, and I will help you understand not just the words, but the world behind them.
+                        I am your intelligent assistant. Ask me to write code, translate languages, explain complex topics, or just have a friendly chat.
                     </p>
                     <div className="grid grid-cols-2 gap-3 max-w-sm w-full">
-                        <button onClick={() => handleSendMessage("Salom salom! Ishlar qalay?")} className="p-3 bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md rounded-xl text-sm text-slate-600 transition-all text-left">
-                            🇺🇿 Salom salom!
+                        <button onClick={() => handleSendMessage("Write a Javascript function to reverse a string.")} className="p-3 bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md rounded-xl text-sm text-slate-600 transition-all text-left">
+                            💻 Write Code
                         </button>
-                         <button onClick={() => handleSendMessage("Hola, ¿cómo estás hoy?")} className="p-3 bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md rounded-xl text-sm text-slate-600 transition-all text-left">
-                            🇪🇸 Hola, ¿qué tal?
+                         <button onClick={() => handleSendMessage("Explain Quantum Entanglement simply.")} className="p-3 bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md rounded-xl text-sm text-slate-600 transition-all text-left">
+                            🧠 Explain Science
                         </button>
-                         <button onClick={() => handleSendMessage("Kon'nichiwa, genki desu ka?")} className="p-3 bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md rounded-xl text-sm text-slate-600 transition-all text-left">
-                            🇯🇵 Kon'nichiwa
+                         <button onClick={() => handleSendMessage("Salom! Ishlar qalay?")} className="p-3 bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md rounded-xl text-sm text-slate-600 transition-all text-left">
+                            🇺🇿 Chat in Uzbek
                         </button>
-                         <button onClick={() => handleSendMessage("Marhaba! Kayf al-hal?")} className="p-3 bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md rounded-xl text-sm text-slate-600 transition-all text-left">
-                            🇸🇦 Marhaba
+                         <button onClick={() => handleSendMessage("Give me a recipe for Italian Pasta.")} className="p-3 bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md rounded-xl text-sm text-slate-600 transition-all text-left">
+                            🍝 Cooking Ideas
                         </button>
                     </div>
                 </div>

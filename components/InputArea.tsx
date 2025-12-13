@@ -11,6 +11,16 @@ const InputArea: React.FC<InputAreaProps> = ({ onSendMessage, disabled, suggesti
   const [input, setInput] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Auto-focus logic: Focus when the component mounts or when 'disabled' becomes false (loading finishes)
+  useEffect(() => {
+    if (!disabled && textareaRef.current) {
+        // Small timeout to ensure the DOM is ready and prevent potential conflict with state updates
+        setTimeout(() => {
+            textareaRef.current?.focus();
+        }, 100);
+    }
+  }, [disabled]);
+
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     if (input.trim() && !disabled) {
@@ -65,7 +75,7 @@ const InputArea: React.FC<InputAreaProps> = ({ onSendMessage, disabled, suggesti
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type a greeting like 'Salom' or ask a question..."
+          placeholder="Ask me anything..."
           className="w-full bg-transparent border-none focus:ring-0 resize-none text-slate-800 placeholder:text-slate-400 py-3 px-3 min-h-[48px] max-h-[120px]"
           disabled={disabled}
           rows={1}
@@ -79,7 +89,7 @@ const InputArea: React.FC<InputAreaProps> = ({ onSendMessage, disabled, suggesti
         </button>
       </form>
       <div className="text-center mt-2">
-         <p className="text-xs text-slate-400">Powered by Gemini 2.5 Flash • Multilingual & Cultural Expert</p>
+         <p className="text-xs text-slate-400">Powered by Gemini 2.5 Flash • Professional Assistant</p>
       </div>
     </div>
   );

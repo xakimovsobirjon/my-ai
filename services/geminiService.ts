@@ -14,7 +14,7 @@ const insightSchema = {
   properties: {
     reply: {
       type: Type.STRING,
-      description: "A natural, friendly, and conversational response to the user's input in the same language as the input.",
+      description: "A comprehensive, helpful, and intelligent response to the user's question. Can be code, explanation, creative writing, or conversation.",
     },
     detectedLanguage: {
       type: Type.STRING,
@@ -22,11 +22,11 @@ const insightSchema = {
     },
     englishTranslation: {
       type: Type.STRING,
-      description: "The English translation of the user's input.",
+      description: "If the input is non-English, provide the English translation. If the input is ALREADY English, provide a 3-5 word summary or 'Key Topic' of the query.",
     },
     culturalNote: {
       type: Type.STRING,
-      description: "A brief, interesting cultural fact related to the language, the specific greeting used, or the region where it is spoken.",
+      description: "A 'Did you know?' fact, a technical 'Pro Tip' (if coding), a historical context, or a deeper insight related to the topic. Do not limit this to culture; make it relevant to the specific query (Math, Science, Tech, etc.).",
     },
     sentiment: {
       type: Type.STRING,
@@ -36,7 +36,7 @@ const insightSchema = {
     suggestedResponses: {
       type: Type.ARRAY,
       items: { type: Type.STRING },
-      description: "3 short suggested follow-up responses the user might want to say next (in the detected language).",
+      description: "3 short follow-up questions or responses the user might want to ask next.",
     },
   },
   required: ["reply", "detectedLanguage", "englishTranslation", "culturalNote", "sentiment", "suggestedResponses"],
@@ -49,7 +49,6 @@ export const sendMessageToGemini = async (history: ChatMessage[], message: strin
 
   try {
     // Format history for Gemini
-    // We map the existing ChatMessage array to the Content format { role, parts: [{ text }] }
     const contents = history.map((msg) => ({
       role: msg.role,
       parts: [{ text: msg.text }],
@@ -65,7 +64,7 @@ export const sendMessageToGemini = async (history: ChatMessage[], message: strin
       model: MODEL_NAME,
       contents: contents,
       config: {
-        systemInstruction: "You are Salom AI, a polite, knowledgeable, and multilingual cultural assistant. Your goal is to facilitate connection through language. When a user speaks to you, identify their language, translate it, provide a relevant cultural tidbit, and respond warmly. If the input is 'salomsalom', recognize it as a playful or emphatic Uzbek/Tajik greeting.",
+        systemInstruction: "You are Salom AI, a powerful, versatile, and intelligent AI assistant powered by Google Gemini. You can help with ANY task: coding, mathematics, creative writing, analysis, translation, or general conversation. Your goal is to provide accurate and helpful answers. Use the 'culturalNote' field to provide extra value: for coding questions, give a best practice tip; for history, give a date or context; for general chat, give a fun fact.",
         responseMimeType: "application/json",
         responseSchema: insightSchema,
       },
